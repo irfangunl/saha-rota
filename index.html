@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f5fd1">
+<meta name="robots" content="noindex,nofollow">
+<title>Trafo Saha Rotası</title>
+<link rel="stylesheet" href="leaflet/leaflet.css">
+<link rel="stylesheet" href="app.css?v=202610231207">
+<script src="leaflet/leaflet.js"></script>
+</head>
+<body>
+<div class="top">
+  <div class="row"><h1>Trafo saha kontrolü</h1><button class="link" id="reset">İşaretleri sıfırla</button></div>
+  <div class="seg small" id="plans"></div>
+  <div class="seg" id="tabs"></div>
+</div>
+<div class="layout">
+  <div id="mapwrap"><div id="map"></div>
+    <div class="mapbtn"><button id="locate">◎ Konumum</button><button id="fitall">Tümü</button></div></div>
+  <div class="side"><div class="sum" id="sum"></div><div class="list" id="list"></div></div>
+</div>
+<div class="dock" id="dock"><a id="nextbtn" target="_blank" rel="noopener"></a></div>
+<script src="data.js?v=202610231207"></script>
+<script src="app.js?v=202610231207"></script>
+</body>
+</html>
