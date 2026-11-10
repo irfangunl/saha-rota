@@ -2,7 +2,7 @@
 const $=id=>document.getElementById(id);
 const plans=$('plans'),tabs=$('tabs'),list=$('list'),dock=$('dock'),nextbtn=$('nextbtn'),reset=$('reset'),fitall=$('fitall'),locate=$('locate');
 const D=window.TRAFO_DATA;
-const COL=[getComputedStyle(document.documentElement).getPropertyValue('--c0').trim(),getComputedStyle(document.documentElement).getPropertyValue('--c1').trim()];
+const COL=['--c0','--c1','--c2'].map(v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim());
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let st={plan:ls.get('plan',0),tab:ls.get('tab',0)};
 let done=ls.get('done',{});
@@ -53,18 +53,17 @@ function render(fit){
   if(st.tab==9){
     const li=a=>a.map(s=>`<li><b>${esc(s.c)}</b> – ${esc(s.il)} / ${esc(s.mh)} <span class="sub">${esc(s.w||s.a)}</span> · <a href="${nav(s.la,s.lo)}" target="_blank">yol tarifi</a></li>`).join('');
     if(P.yedek.length)html+=`<div class="sec"><h3>Yedek – vakit kalırsa (${P.yedek.length+1})</h3><div class="sub">Güne sığmayanlar.</div><ul>${li(P.yedek)}<li><b>TBK738</b> – Yüreğir / Kışla <span class="sub">konumu bilinmiyor</span></li></ul></div>`;
-    html+=`<div class="sec"><h3>Plana alınmayanlar (${D.haric.length})</h3><div class="sub">Uzak / tek kalan noktalar. Karaisalı'daki 6 trafo ayrı bir gün.</div><ul>${li(D.haric)}</ul></div>`;
+    if(D.haric.length)html+=`<div class="sec"><h3>Plana alınmayanlar (${D.haric.length})</h3><div class="sub">Uzak / tek kalan noktalar. Karaisalı'daki 6 trafo ayrı bir gün.</div><ul>${li(D.haric)}</ul></div>`;
     sum=`<span>${esc(P.title)} · plan dışı trafolar</span>`;
   }else{
     const t=P.teams[st.tab];const n=t.stops.filter(s=>done[key(s.c)]).length;
     next=t.stops.find(s=>!done[key(s.c)]);
-    sum=`<span><b>${t.stops.length}</b> trafo</span><span>~${t.km} km</span><span>08:30 → ~${t.end}</span><span><b>${n}/${t.stops.length}</b> tamam</span><div class="bar"><i id="barfill"></i></div>`;
+    sum=`<span><b>${t.stops.length}</b> trafo</span><span>~${t.km} km</span><span><b>${n}/${t.stops.length}</b> tamam</span><div class="bar"><i id="barfill"></i></div>`;
     t.stops.forEach(s=>{
-      if(t.lunch==s.n)html+=`<div class="lunch">Öğle arası · 1 saat</div>`;
       const isDone=!!done[key(s.c)];
       html+=`<div class="card ${isDone?'done':''} ${next&&next.c==s.c?'next':''}" id="c-${s.c}">
         <div class="num">${isDone?'✓':s.n}</div>
-        <div><div class="head"><span class="code">${esc(s.c)}</span><span class="eta">~${s.t}</span></div>
+        <div><div class="head"><span class="code">${esc(s.c)}</span></div>
           <div class="place">${esc(s.il)} / ${esc(s.mh)}</div>${s.y?`<div class="sub">${esc(s.y)}</div>`:''}
           <span class="tag">${esc(s.d)}</span></div>
         <div class="acts"><a class="go" href="${nav(s.la,s.lo)}" target="_blank" rel="noopener">➤ Yol tarifi</a>
